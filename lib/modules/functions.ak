@@ -1,4 +1,4 @@
-use aiken/builtin
+use aiken/primitive/bytearray
 
 fn double(x: Int) -> Int {
   2 * x
@@ -21,12 +21,11 @@ pub fn reverse(word: ByteArray) -> ByteArray {
   when word is {
     "" -> ""
     ws -> {
-      let tail_length = builtin.length_of_bytearray(ws) - 1
-      let tail = builtin.slice_bytearray(1, tail_length, ws)
-      let head = builtin.slice_bytearray(0, 1, ws)
+      let tail = ws |> bytearray.drop(1)
+      let head = ws |> bytearray.take(1)
 
-      // [..tail, head]
-      builtin.append_bytearray(reverse(tail), head)
+      // [..reverse(tail), head]
+      bytearray.concat(reverse(tail), head)
     }
   }
 }
